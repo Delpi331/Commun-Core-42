@@ -1,42 +1,19 @@
 #include "fract.h"
 
-// gcc -o fractol utils.c Main.c fractal.c window.c -Iminilibx -Lminilibx -lmlx -lX11 -lXext -lm
-
-int strcmp(const char *s1, const char *s2)
+int	strcmp(const char *s1, const char *s2)
 {
-    while (*s1 && *s1 == *s2)
-    {
-        s1++;
-        s2++;
-    }
-    return (*(unsigned char *)s1 - *(unsigned char *)s2);
+	while (*s1 && *s1 == *s2)
+	{
+		s1++;
+		s2++;
+	}
+	return (*(unsigned char *)s1 - *(unsigned char *)s2);
 }
 
-int	main(int argc, char **argv)
+t_fractal	fract(t_fractal fractal)
 {
-	t_fractal		fractal;
-	t_fractal_type	type;
-	double			cr;
-	double			ci;
-
-	cr = 0.0;
-	ci = 0.0;
-	if (argc < 2)
-		return(0);
-	if (strcmp(argv[1], "mandelbrot") == 0)
-		type = MANDELBROT;
-	else if (strcmp(argv[1], "julia") == 0)
-	{
-		if (argc != 4)
-			return(0);
-		type = JULIA;
-		cr = atof(argv[2]);
-		ci = atof(argv[3]);
-	}
-	else
-		return(0);
 	fractal.mlx = mlx_init();
-	fractal.win = mlx_new_window(fractal.mlx, fractal.width, fractal.height, "Fractol");
+	fractal.win = mlx_new_window(fractal.mlx, 800, 600, "Fractol");
 	fractal.width = 800;
 	fractal.height = 600;
 	fractal.img = mlx_new_image(fractal.mlx, fractal.width, fractal.height);
@@ -50,11 +27,44 @@ int	main(int argc, char **argv)
 	fractal.x_offset = -2.0;
 	fractal.y_offset = -1.5;
 	fractal.max_iter = 100;
-	render_fractal(&fractal, type, cr, ci);
+	return (fractal);
+}
+
+void win(t_fractal fractal)
+{
 	mlx_put_image_to_window(fractal.mlx, fractal.win, fractal.img, 0, 0);
 	mlx_hook(fractal.win, 17, 0, close_window, NULL);
 	mlx_key_hook(fractal.win, key_hook, &fractal);
 	mlx_mouse_hook(fractal.win, mouse_hook, &fractal);
 	mlx_loop(fractal.mlx);
+
+}
+
+int	main(int argc, char **argv)
+{
+	t_fractal		fractal;
+	t_fractal_type	type;
+	double			cr;
+	double			ci;
+
+	cr = 0.0;
+	ci = 0.0;
+	if (argc < 2)
+		return (0);
+	if (strcmp(argv[1], "mandelbrot") == 0)
+		type = MANDELBROT;
+	else if (strcmp(argv[1], "julia") == 0)
+	{
+		if (argc != 4)
+			return (0);
+		type = JULIA;
+		cr = atof(argv[2]);
+		ci = atof(argv[3]);
+	}
+	else
+		return (0);
+	fractal = fract(fractal);
+	render_fractal(&fractal, type, cr, ci);
+	win(fractal);
 	return (0);
 }
