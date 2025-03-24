@@ -2,22 +2,19 @@
 
 int	julia(double zr, double zi, double cr, double ci, int max_iter)
 {
-	double	zr2;
-	double	zi2;
-	int		iterations;
+    int iterations = 0;
 
-	zr2 = zr * zr;
-	zi2 = zi * zi;
-	iterations = 0;
-	while (zr2 + zi2 < 4.0 && iterations < max_iter)
-	{
-		zi = 2.0 * zr * zi + ci;
-		zr = zr2 - zi2 + cr;
-		zr2 = zr * zr;
-		zi2 = zi * zi;
-		iterations++;
-	}
-	return (iterations);
+    while (iterations < max_iter) {
+        double zr2 = zr * zr;
+        double zi2 = zi * zi;
+
+        if (zr2 + zi2 > 4.0) break;
+        zi = 2 * zr * zi + ci;
+        zr = zr2 - zi2 + cr;
+        iterations++;
+    }
+
+    return iterations;
 }
 int	mandelbrot(double cr, double ci)
 {

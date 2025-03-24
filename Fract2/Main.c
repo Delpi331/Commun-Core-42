@@ -58,8 +58,8 @@ int	main(int argc, char **argv)
 		if (argc != 4)
 			return (0);
 		type = JULIA;
-		cr = atof(argv[2]);
-		ci = atof(argv[3]);
+		fractal.cr = atof(argv[2]);
+		fractal.ci = atof(argv[3]);
 	}
 	else
 		return (0);
